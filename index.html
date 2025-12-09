@@ -3265,13 +3265,11 @@
       return 'needs-improvement';
     };
     
-    // Render markdown to HTML
     const renderMarkdown = (text) => {
       if (!text) return '';
       if (typeof marked !== 'undefined') {
         return marked.parse(text);
       }
-      // Basic fallback if marked isn't loaded
       return text
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
@@ -3288,7 +3286,7 @@
     function LoadingSpinner({ text = "Loading..." }) {
       return (
         <div className="grading-indicator">
-          <span className="spinner"></span>
+          <div className="spinner"></div>
           <span className="grading-text">{text}</span>
         </div>
       );
@@ -3428,20 +3426,14 @@
               const state = paragraphStates[para.id] || {};
               let className = 'question-tracker-item';
               
-              if (index === currentIndex) {
-                className += ' current';
-              } else if (state.completed) {
-                className += ' correct';
-              } else if (state.attempts > 0) {
-                className += ' in-progress';
-              }
+              if (index === currentIndex) className += ' current';
+              else if (state.completed) className += ' correct';
+              else if (state.attempts > 0) className += ' in-progress';
               
               const canNavigate = index <= currentIndex || state.completed || 
                 (index > 0 && paragraphStates[paragraphs[index - 1]?.id]?.completed);
               
-              if (!canNavigate) {
-                className += ' locked';
-              }
+              if (!canNavigate) className += ' locked';
               
               return (
                 <div
@@ -3493,18 +3485,14 @@
           
           {feedback.progressNote && (
             <div className="feedback-section">
-              <div className="feedback-section-title">
-                <span>📈</span> Progress Since Last Attempt
-              </div>
+              <div className="feedback-section-title"><span>📈</span> Progress</div>
               <p style={{ color: 'var(--color-text-secondary)' }}>{feedback.progressNote}</p>
             </div>
           )}
           
           {feedback.strengths && feedback.strengths.length > 0 && (
             <div className="feedback-section">
-              <div className="feedback-section-title">
-                <span>✨</span> Strengths
-              </div>
+              <div className="feedback-section-title"><span>✨</span> Strengths</div>
               <ul className="feedback-list strengths">
                 {feedback.strengths.map((s, i) => <li key={i}>{s}</li>)}
               </ul>
@@ -3513,9 +3501,7 @@
           
           {feedback.improvements && feedback.improvements.length > 0 && (
             <div className="feedback-section">
-              <div className="feedback-section-title">
-                <span>🎯</span> Areas to Improve
-              </div>
+              <div className="feedback-section-title"><span>🎯</span> Areas to Improve</div>
               <ul className="feedback-list improvements">
                 {feedback.improvements.map((s, i) => <li key={i}>{s}</li>)}
               </ul>
@@ -3524,12 +3510,8 @@
           
           {feedback.detailedFeedback && (
             <div className="feedback-section">
-              <div className="feedback-section-title">
-                <span>📝</span> Detailed Feedback
-              </div>
-              <div className="detailed-feedback">
-                {feedback.detailedFeedback}
-              </div>
+              <div className="feedback-section-title"><span>📝</span> Detailed Feedback</div>
+              <div className="detailed-feedback">{feedback.detailedFeedback}</div>
             </div>
           )}
           
@@ -3543,17 +3525,11 @@
           <div className="revision-actions">
             {canRevise ? (
               <>
-                <button className="btn btn-primary" onClick={onRevise}>
-                  ✏️ Revise My Writing
-                </button>
-                <button className="btn btn-secondary" onClick={onAccept}>
-                  ✓ Accept & Continue
-                </button>
+                <button className="btn btn-primary" onClick={onRevise}>✏️ Revise My Writing</button>
+                <button className="btn btn-secondary" onClick={onAccept}>✓ Accept & Continue</button>
               </>
             ) : (
-              <button className="btn btn-primary" onClick={onAccept}>
-                Continue to Next Section →
-              </button>
+              <button className="btn btn-primary" onClick={onAccept}>Continue to Next Section →</button>
             )}
           </div>
         </div>
@@ -3561,16 +3537,10 @@
     }
     
     // =====================================================
-    // PARAGRAPH WRITING SCREEN
+    // PARAGRAPH SCREEN
     // =====================================================
     
-    function ParagraphScreen({ 
-      paragraph, 
-      paragraphState, 
-      onSubmitAttempt, 
-      onComplete,
-      isLastParagraph 
-    }) {
+    function ParagraphScreen({ paragraph, paragraphState, onSubmitAttempt, onComplete }) {
       const [text, setText] = useState(paragraphState?.currentText || '');
       const [isSubmitting, setIsSubmitting] = useState(false);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -3584,7 +3554,6 @@
       const maxAttempts = CONFIG.maxAttempts || 3;
       const canSubmit = wordCount >= minWords && !isSubmitting;
       
-      // If there's existing feedback, show it
       useEffect(() => {
         if (paragraphState?.lastFeedback && !paragraphState?.completed) {
           setCurrentFeedback(paragraphState.lastFeedback);
@@ -3594,7 +3563,6 @@
       
       const handleSubmit = async () => {
         if (!canSubmit) return;
-        
         setIsSubmitting(true);
         setShowFeedback(false);
         
@@ -3618,8 +3586,6 @@
           if (data.success) {
             setCurrentFeedback(data.feedback);
             setShowFeedback(true);
-            
-            // Update state via parent
             onSubmitAttempt({
               text: text,
               feedback: data.feedback,
@@ -3641,9 +3607,7 @@
       const handleRevise = () => {
         setShowFeedback(false);
         setCurrentFeedback(null);
-        if (textareaRef.current) {
-          textareaRef.current.focus();
-        }
+        textareaRef.current?.focus();
       };
       
       const handleAccept = () => {
@@ -3673,19 +3637,13 @@
             </div>
           </div>
           
-          {/* Learning Material */}
-          <div 
-            className="learning-material"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(paragraph.learningMaterial) }}
-          />
+          <div className="learning-material" dangerouslySetInnerHTML={{ __html: renderMarkdown(paragraph.learningMaterial) }} />
           
-          {/* Writing Prompt */}
           <div className="writing-prompt">
             <div className="writing-prompt-label">Your Task</div>
             <div className="writing-prompt-text">{paragraph.writingPrompt}</div>
           </div>
           
-          {/* Attempt Indicator */}
           <div className="attempt-indicator">
             <span className="attempt-badge">Attempt {attemptNumber} of {maxAttempts}</span>
             {attemptNumber < maxAttempts && (
@@ -3695,7 +3653,6 @@
             )}
           </div>
           
-          {/* Text Editor */}
           {!showFeedback && (
             <>
               <textarea
@@ -3708,10 +3665,7 @@
               />
               
               <div className={`word-count ${wordCountClass}`}>
-                <span>
-                  {wordCount} words
-                  {wordCount < minWords && ` (minimum ${minWords})`}
-                </span>
+                <span>{wordCount} words {wordCount < minWords && `(minimum ${minWords})`}</span>
                 <span>Target: {targetWords} words</span>
               </div>
               
@@ -3721,11 +3675,7 @@
                 </div>
               ) : (
                 <div style={{ marginTop: 'var(--space-lg)' }}>
-                  <button 
-                    className="btn btn-primary btn-large"
-                    onClick={handleSubmit}
-                    disabled={!canSubmit}
-                  >
+                  <button className="btn btn-primary btn-large" onClick={handleSubmit} disabled={!canSubmit}>
                     Submit for Feedback
                   </button>
                 </div>
@@ -3733,7 +3683,6 @@
             </>
           )}
           
-          {/* Feedback Display */}
           {showFeedback && currentFeedback && (
             <FeedbackDisplay
               feedback={currentFeedback}
@@ -3751,25 +3700,15 @@
     // ESSAY COMPILATION SCREEN
     // =====================================================
     
-    function EssayCompilationScreen({ 
-      studentName, 
-      paragraphs, 
-      paragraphStates, 
-      onRequestFeedback,
-      essayFeedback,
-      isLoadingFeedback
-    }) {
+    function EssayCompilationScreen({ studentName, paragraphs, paragraphStates, onRequestFeedback, essayFeedback, isLoadingFeedback }) {
       const [showFeedback, setShowFeedback] = useState(!!essayFeedback);
       
       useEffect(() => {
         if (essayFeedback) setShowFeedback(true);
       }, [essayFeedback]);
       
-      const handlePrint = () => {
-        window.print();
-      };
+      const handlePrint = () => window.print();
       
-      // Compile paragraph data for display
       const compiledParagraphs = paragraphs.map(p => ({
         ...p,
         text: paragraphStates[p.id]?.finalText || '',
@@ -3778,31 +3717,22 @@
       
       return (
         <div className="ghost-appear">
-          {/* Compiled Essay */}
           <div className="essay-compilation">
             <div className="essay-compilation-header">
               <h1 className="essay-compilation-title">{CONFIG.essayTitle}</h1>
-              <p className="essay-compilation-meta">
-                By {studentName} • {CONFIG.subject} • {formatDateTime(new Date())}
-              </p>
+              <p className="essay-compilation-meta">By {studentName} • {CONFIG.subject} • {formatDateTime(new Date())}</p>
             </div>
             
             <div className="compiled-essay">
-              {compiledParagraphs.map((para, index) => (
-                <p key={para.id} className="compiled-paragraph">
-                  {para.text}
-                </p>
+              {compiledParagraphs.map((para) => (
+                <p key={para.id} className="compiled-paragraph">{para.text}</p>
               ))}
             </div>
           </div>
           
-          {/* Request Feedback Button */}
           {!showFeedback && !isLoadingFeedback && (
             <div style={{ textAlign: 'center', marginBottom: 'var(--space-xl)' }}>
-              <button 
-                className="btn btn-primary btn-large"
-                onClick={onRequestFeedback}
-              >
+              <button className="btn btn-primary btn-large" onClick={onRequestFeedback}>
                 📊 Get Overall Essay Feedback
               </button>
             </div>
@@ -3814,7 +3744,6 @@
             </div>
           )}
           
-          {/* Holistic Feedback */}
           {showFeedback && essayFeedback && (
             <div className="holistic-feedback">
               <div className="holistic-header">
@@ -3835,19 +3764,13 @@
                 </div>
               </div>
               
-              {/* Summary */}
               {essayFeedback.essaySummary && (
                 <div className="feedback-section">
-                  <div className="feedback-section-title">
-                    <span>📝</span> Summary
-                  </div>
-                  <div className="detailed-feedback">
-                    {essayFeedback.essaySummary}
-                  </div>
+                  <div className="feedback-section-title"><span>📝</span> Summary</div>
+                  <div className="detailed-feedback">{essayFeedback.essaySummary}</div>
                 </div>
               )}
               
-              {/* Best Quote */}
               {essayFeedback.bestQuotation && (
                 <div className="best-quote">
                   <div className="best-quote-label">⭐ Your Best Writing</div>
@@ -3855,13 +3778,10 @@
                 </div>
               )}
               
-              {/* Strengths & Improvements */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-lg)', marginTop: 'var(--space-xl)' }}>
                 {essayFeedback.holisticStrengths && (
                   <div className="feedback-section">
-                    <div className="feedback-section-title">
-                      <span>✨</span> Essay Strengths
-                    </div>
+                    <div className="feedback-section-title"><span>✨</span> Essay Strengths</div>
                     <ul className="feedback-list strengths">
                       {essayFeedback.holisticStrengths.map((s, i) => <li key={i}>{s}</li>)}
                     </ul>
@@ -3870,9 +3790,7 @@
                 
                 {essayFeedback.holisticImprovements && (
                   <div className="feedback-section">
-                    <div className="feedback-section-title">
-                      <span>🎯</span> Areas for Development
-                    </div>
+                    <div className="feedback-section-title"><span>🎯</span> Areas for Development</div>
                     <ul className="feedback-list improvements">
                       {essayFeedback.holisticImprovements.map((s, i) => <li key={i}>{s}</li>)}
                     </ul>
@@ -3880,62 +3798,14 @@
                 )}
               </div>
               
-              {/* Flow & Argument */}
-              {(essayFeedback.flowAndCoherence || essayFeedback.argumentStrength) && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-lg)', marginTop: 'var(--space-xl)' }}>
-                  {essayFeedback.flowAndCoherence && (
-                    <div className="feedback-section">
-                      <div className="feedback-section-title">
-                        <span>🔗</span> Flow & Coherence
-                      </div>
-                      <div className="detailed-feedback" style={{ fontSize: '0.95rem' }}>
-                        {essayFeedback.flowAndCoherence}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {essayFeedback.argumentStrength && (
-                    <div className="feedback-section">
-                      <div className="feedback-section-title">
-                        <span>💪</span> Argument Strength
-                      </div>
-                      <div className="detailed-feedback" style={{ fontSize: '0.95rem' }}>
-                        {essayFeedback.argumentStrength}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Paragraph by Paragraph */}
-              {essayFeedback.paragraphByParagraph && (
-                <div className="feedback-section" style={{ marginTop: 'var(--space-xl)' }}>
-                  <div className="feedback-section-title">
-                    <span>📑</span> Paragraph Comments
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
-                    {essayFeedback.paragraphByParagraph.map((p, i) => (
-                      <div key={i} className="criteria-item">
-                        <div className="criteria-label">{p.title}</div>
-                        <div style={{ color: 'var(--color-text-secondary)' }}>{p.comment}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {/* Encouragement */}
               {essayFeedback.closingEncouragement && (
                 <div className="encouragement-box">
                   <p>{essayFeedback.closingEncouragement}</p>
                 </div>
               )}
               
-              {/* Actions */}
               <div style={{ display: 'flex', gap: 'var(--space-md)', justifyContent: 'center', marginTop: 'var(--space-xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--color-border)' }}>
-                <button className="btn btn-primary btn-large" onClick={handlePrint}>
-                  🖨️ Print Essay & Feedback
-                </button>
+                <button className="btn btn-primary btn-large" onClick={handlePrint}>🖨️ Print Essay & Feedback</button>
               </div>
             </div>
           )}
@@ -3957,7 +3827,6 @@
           const response = await fetch('/.netlify/functions/get-submissions');
           const data = await response.json();
           if (data.submissions) {
-            // Filter for essay submissions
             const essaySubmissions = data.submissions.filter(s => s.type === 'essay');
             setSubmissions(essaySubmissions);
           }
@@ -3991,12 +3860,8 @@
                 <p className="subtitle">{CONFIG.title}</p>
               </div>
               <div style={{ display: 'flex', gap: 'var(--space-md)' }}>
-                <button className="btn btn-secondary" onClick={fetchSubmissions}>
-                  🔄 Refresh
-                </button>
-                <button className="btn btn-secondary" onClick={onLogout}>
-                  Logout
-                </button>
+                <button className="btn btn-secondary" onClick={fetchSubmissions}>🔄 Refresh</button>
+                <button className="btn btn-secondary" onClick={onLogout}>Logout</button>
               </div>
             </div>
           </div>
@@ -4024,23 +3889,11 @@
                     {submissions.map((sub, index) => (
                       <tr key={index} style={{ borderBottom: '1px solid var(--color-border-light)' }}>
                         <td style={{ padding: 'var(--space-md)' }}>{sub.studentName}</td>
-                        <td style={{ padding: 'var(--space-md)', textAlign: 'center', fontWeight: 600, color: 'var(--color-success)' }}>
-                          {sub.score}%
-                        </td>
+                        <td style={{ padding: 'var(--space-md)', textAlign: 'center', fontWeight: 600, color: 'var(--color-success)' }}>{sub.score}%</td>
+                        <td style={{ padding: 'var(--space-md)', textAlign: 'center' }}>{sub.grade || '-'}</td>
+                        <td style={{ padding: 'var(--space-md)', color: 'var(--color-text-muted)' }}>{formatDateTime(sub.submittedAt)}</td>
                         <td style={{ padding: 'var(--space-md)', textAlign: 'center' }}>
-                          {sub.grade || '-'}
-                        </td>
-                        <td style={{ padding: 'var(--space-md)', color: 'var(--color-text-muted)' }}>
-                          {formatDateTime(sub.submittedAt)}
-                        </td>
-                        <td style={{ padding: 'var(--space-md)', textAlign: 'center' }}>
-                          <button 
-                            className="btn btn-secondary"
-                            style={{ padding: 'var(--space-xs) var(--space-md)', fontSize: '0.85rem' }}
-                            onClick={() => setSelectedSubmission(sub)}
-                          >
-                            View
-                          </button>
+                          <button className="btn btn-secondary" style={{ padding: 'var(--space-xs) var(--space-md)', fontSize: '0.85rem' }} onClick={() => setSelectedSubmission(sub)}>View</button>
                         </td>
                       </tr>
                     ))}
@@ -4050,44 +3903,17 @@
             )}
           </div>
           
-          {/* Submission Detail Modal */}
           {selectedSubmission && (
-            <div style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0, 0, 0, 0.8)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 1000,
-              padding: 'var(--space-lg)',
-              overflow: 'auto'
-            }} onClick={() => setSelectedSubmission(null)}>
-              <div 
-                className="card" 
-                style={{ 
-                  maxWidth: '800px', 
-                  width: '100%', 
-                  maxHeight: '90vh', 
-                  overflow: 'auto' 
-                }}
-                onClick={(e) => e.stopPropagation()}
-              >
+            <div style={{ position: 'fixed', inset: 0, background: 'rgba(0, 0, 0, 0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 'var(--space-lg)', overflow: 'auto' }} onClick={() => setSelectedSubmission(null)}>
+              <div className="card" style={{ maxWidth: '800px', width: '100%', maxHeight: '90vh', overflow: 'auto' }} onClick={(e) => e.stopPropagation()}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-lg)' }}>
                   <h3>{selectedSubmission.studentName}'s Essay</h3>
-                  <button 
-                    className="btn btn-secondary"
-                    onClick={() => setSelectedSubmission(null)}
-                  >
-                    Close
-                  </button>
+                  <button className="btn btn-secondary" onClick={() => setSelectedSubmission(null)}>Close</button>
                 </div>
-                
                 <div style={{ marginBottom: 'var(--space-lg)' }}>
                   <strong>Score:</strong> {selectedSubmission.score}%
                   {selectedSubmission.grade && <> • <strong>Grade:</strong> {selectedSubmission.grade}</>}
                 </div>
-                
                 {selectedSubmission.essay && (
                   <div className="compiled-essay" style={{ background: 'var(--color-bg)', padding: 'var(--space-lg)', borderRadius: 'var(--radius-md)' }}>
                     {selectedSubmission.essay.split('\n\n').map((para, i) => (
@@ -4101,6 +3927,70 @@
         </div>
       );
     }
+    
+    // =====================================================
+    // MAIN APP COMPONENT
+    // =====================================================
+    
+    function App() {
+      const [screen, setScreen] = useState('entry');
+      const [studentName, setStudentName] = useState('');
+      const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
+      const [paragraphStates, setParagraphStates] = useState({});
+      const [essayFeedback, setEssayFeedback] = useState(null);
+      const [isLoadingEssayFeedback, setIsLoadingEssayFeedback] = useState(false);
+      
+      // Load saved state
+      useEffect(() => {
+        const saved = localStorage.getItem(CONFIG.LOCAL_STORAGE_KEY);
+        if (saved) {
+          try {
+            const data = JSON.parse(saved);
+            if (data.studentName) setStudentName(data.studentName);
+            if (data.paragraphStates) setParagraphStates(data.paragraphStates);
+            if (data.currentParagraphIndex !== undefined) setCurrentParagraphIndex(data.currentParagraphIndex);
+            if (data.studentName && Object.keys(data.paragraphStates || {}).length > 0) {
+              const allComplete = PARAGRAPHS.every(p => data.paragraphStates[p.id]?.completed);
+              setScreen(allComplete ? 'compilation' : 'writing');
+            }
+          } catch (e) {
+            console.error('Failed to load saved state:', e);
+          }
+        }
+      }, []);
+      
+      // Auto-save
+      useEffect(() => {
+        if (studentName && screen === 'writing') {
+          const saveData = { studentName, paragraphStates, currentParagraphIndex, savedAt: new Date().toISOString() };
+          localStorage.setItem(CONFIG.LOCAL_STORAGE_KEY, JSON.stringify(saveData));
+        }
+      }, [studentName, paragraphStates, currentParagraphIndex, screen]);
+      
+      const handleStudentStart = (name) => {
+        setStudentName(name);
+        setScreen('writing');
+      };
+      
+      const handleTeacherLogin = () => {
+        setScreen('dashboard');
+      };
+      
+      const handleSubmitAttempt = (paragraphId, attemptData) => {
+        setParagraphStates(prev => {
+          const current = prev[paragraphId] || { attempts: 0, feedbackHistory: [] };
+          return {
+            ...prev,
+            [paragraphId]: {
+              ...current,
+              attempts: attemptData.attemptNumber,
+              currentText: attemptData.text,
+              lastFeedback: attemptData.feedback,
+              feedbackHistory: [
+                ...current.feedbackHistory,
+                { text: attemptData.text, feedback: attemptData.feedback.detailedFeedback, score: attemptData.feedback.overallScore }
+              ]
+            }
           };
         });
       };
@@ -4116,7 +4006,6 @@
           }
         }));
         
-        // Move to next paragraph or compilation
         const nextIndex = currentParagraphIndex + 1;
         if (nextIndex >= PARAGRAPHS.length) {
           setScreen('compilation');
@@ -4154,12 +4043,8 @@
           const data = await response.json();
           
           if (data.success) {
-            setEssayFeedback({
-              ...data.feedback,
-              finalScore: data.finalScore
-            });
+            setEssayFeedback({ ...data.feedback, finalScore: data.finalScore });
             
-            // Submit to database
             try {
               await fetch('/.netlify/functions/submit-homework', {
                 method: 'POST',
@@ -4179,7 +4064,6 @@
               console.error('Failed to save submission:', submitError);
             }
             
-            // Clear local storage
             localStorage.removeItem(CONFIG.LOCAL_STORAGE_KEY);
           } else {
             throw new Error(data.error || 'Failed to grade essay');
@@ -4196,14 +4080,9 @@
         setScreen('entry');
       };
       
-      // Render appropriate screen
+      // Render screens
       if (screen === 'entry') {
-        return (
-          <EntryScreen
-            onStudentStart={handleStudentStart}
-            onTeacherLogin={handleTeacherLogin}
-          />
-        );
+        return <EntryScreen onStudentStart={handleStudentStart} onTeacherLogin={handleTeacherLogin} />;
       }
       
       if (screen === 'dashboard') {
@@ -4217,7 +4096,6 @@
               <h1 className="gold-glow">{CONFIG.title}</h1>
               <p className="subtitle">Essay Complete • {studentName}</p>
             </div>
-            
             <EssayCompilationScreen
               studentName={studentName}
               paragraphs={PARAGRAPHS}
@@ -4238,9 +4116,7 @@
           <div className="app-header">
             <h1 className="gold-glow">{CONFIG.title}</h1>
             <p className="subtitle">{CONFIG.subject} • {studentName}</p>
-            {CONFIG.essayTitle && (
-              <p className="essay-title">"{CONFIG.essayTitle}"</p>
-            )}
+            {CONFIG.essayTitle && <p className="essay-title">"{CONFIG.essayTitle}"</p>}
           </div>
           
           <ParagraphTracker
@@ -4256,7 +4132,6 @@
             paragraphState={paragraphStates[currentParagraph.id]}
             onSubmitAttempt={(data) => handleSubmitAttempt(currentParagraph.id, data)}
             onComplete={(text, feedback) => handleCompleteParagraph(currentParagraph.id, text, feedback)}
-            isLastParagraph={currentParagraphIndex === PARAGRAPHS.length - 1}
           />
         </div>
       );
