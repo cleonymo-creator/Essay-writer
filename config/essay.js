@@ -1,365 +1,239 @@
-// ============================================
-// ESSAY CONFIGURATION
-// ============================================
-// This file configures your essay writing assignment.
-// The AI will generate this based on your essay topic.
-// ============================================
-
 window.ESSAY_CONFIG = {
-  // Basic Information
-  title: "A Christmas Carol - Character Analysis Essay",
+  title: "Lady Macbeth: Acts 1 & 2 Analysis",
   subject: "English Literature",
-  yearGroup: "Year 9",
-  
-  // Essay metadata
-  essayTitle: "How does Dickens present Scrooge's transformation in 'A Christmas Carol'?",
-  
-  // Instructions shown to students
-  instructions: "In this guided essay, you will write a structured analysis of Scrooge's character transformation. Each section will guide you through a different aspect of the essay. Take your time with each paragraph - you'll have up to three attempts to refine your writing based on AI feedback.",
-  
-  // How many revision attempts per paragraph (2-3 recommended)
+  yearGroup: "Year 10",
+  essayTitle: "How does Shakespeare present the character of Lady Macbeth in Acts 1 and 2 of Macbeth?",
+  instructions: "Write a 7-paragraph essay analysing Lady Macbeth's character development, language, and influence in the first two acts. Focus on her ambition, her manipulation of gender roles, and her changing relationship with Macbeth. Remember to integrate context regarding Jacobean views on women and the supernatural.",
   maxAttempts: 3,
-  
-  // Minimum word count per paragraph (0 to disable)
   minWordsPerParagraph: 80,
-  
-  // Target word count per paragraph (shown as guidance)
   targetWordsPerParagraph: 120,
-  
-  // Teacher dashboard password
   teacherPassword: "teacher123",
-  
-  // ============================================
-  // ESSAY STRUCTURE
-  // ============================================
-  // Each paragraph has:
-  // - id: Unique identifier
-  // - title: Short title for progress tracker
-  // - type: "introduction", "body", or "conclusion"
-  // - learningMaterial: Context and guidance for the student
-  // - writingPrompt: Specific instruction for what to write
-  // - keyPoints: Things the AI should look for when grading
-  // - exampleQuotes: Suggested quotes to use (optional)
-  // - points: How many marks this paragraph is worth
-  // ============================================
-  
+
   paragraphs: [
-    // ==========================================
-    // INTRODUCTION
-    // ==========================================
     {
       id: 1,
       title: "Introduction",
       type: "introduction",
       learningMaterial: `
-## Writing Your Introduction
+## Setting the Stage
+Your introduction needs to establish a strong argument (thesis) immediately. Do not just retell the story.
 
-Your introduction should:
-- **Hook the reader** with an engaging opening statement about transformation or redemption
-- **Introduce the text** - mention Dickens and 'A Christmas Carol' (1843)
-- **Address the question** - show you understand what's being asked about Scrooge's transformation
-- **Outline your argument** - briefly preview the main points you'll make
+### Key Contextual Factors (AO3)
+- **The Jacobean Era:** A patriarchal society where women were expected to be subservient, gentle, and maternal.
+- **The Divine Right of Kings:** Plotting regicide was considered a sin against God and nature.
+- **The Supernatural:** An audience in 1606 would view Lady Macbeth’s alignment with "spirits" as genuinely terrifying and damnable.
 
-### Context to Consider
-Charles Dickens wrote 'A Christmas Carol' in 1843, during the Victorian era when there was a huge divide between rich and poor. The novella was partly a social commentary on the treatment of the poor.
-
-### Key Vocabulary
-Consider using: transformation, redemption, miserly, benevolent, catalyst, moral awakening
+### Suggested Approach
+1.  **Hook:** Start with a broad statement about Lady Macbeth's role as a catalyst for the tragedy.
+2.  **Thesis:** State clearly how Shakespeare presents her. Is she purely evil, or is she desperate for power she cannot access as a woman?
+3.  **Signpost:** Briefly mention the key themes you will cover (Ambition, Gender, Appearance vs Reality).
       `,
-      writingPrompt: "Write your introduction paragraph. Hook the reader, introduce the text and question, and briefly outline how you will argue that Dickens presents Scrooge's transformation.",
+      writingPrompt: "Write an introduction that outlines your argument. Define Lady Macbeth's role in the play and link her character to the expectations of women in Jacobean society.",
       keyPoints: [
-        "Engaging opening hook",
-        "Mentions Dickens and the novella by name",
-        "Clearly addresses the question about transformation",
-        "Previews the argument structure",
-        "Appropriate academic tone"
+        "Establishes a clear thesis statement regarding Lady Macbeth's character",
+        "demonstrates awareness of Jacobean gender roles (context)",
+        "Outlines the essay's direction without simply retelling the plot"
       ],
+      exampleQuotes: [],
       points: 10
     },
-    
-    // ==========================================
-    // BODY PARAGRAPH 1
-    // ==========================================
     {
       id: 2,
-      title: "Scrooge at the Start",
+      title: "Reaction to the Prophecy (Act 1, Scene 5)",
       type: "body",
       learningMaterial: `
-## Scrooge's Character at the Beginning
+## The Letter and Immediate Ambition
+In this section, analyse Lady Macbeth's first appearance. She reads Macbeth's letter and immediately decides the King must die.
 
-Before exploring the transformation, you need to establish what Scrooge is like at the start of the novella.
+### Key Analysis Points
+- **Instant Determination:** Unlike Macbeth, who debates the pros and cons, she accepts the prophecy immediately.
+- **Perception of Macbeth:** She fears his nature is too kind. This reveals her own ruthless values.
+- **Metaphor:** *"Too full o' th' milk of human kindness"* creates a contrast between "milk" (nurturing, white, innocent) and the "illness" (ambition) she believes is necessary.
 
-### Key Quotations
-- **"Oh! But he was a tight-fisted hand at the grindstone, Scrooge!"** - Shows his miserly nature
-- **"Hard and sharp as flint"** - Simile emphasising his cold, unyielding character
-- **"solitary as an oyster"** - Suggests isolation and self-containment
-- **"The cold within him froze his old features"** - Internal coldness reflected externally
-
-### Techniques to Discuss
-- **Semantic field of coldness** - Dickens repeatedly associates Scrooge with cold imagery
-- **Listing/accumulation** - The opening description piles up negative traits
-- **Pathetic fallacy** - Weather reflects his inner state
-
-### Paragraph Structure (PEEL)
-- **P**oint: What aspect of Scrooge are you focusing on?
-- **E**vidence: Which quotation supports this?
-- **E**xplain: How does the language create this impression?
-- **L**ink: How does this connect to transformation/the question?
+### Vocabulary to Use
+- **Catalyst:** She triggers the action.
+- **Soliloquy:** She reveals her inner thoughts directly to the audience.
+- **Subversion:** She overturns expected norms.
       `,
-      writingPrompt: "Write a paragraph analysing how Dickens presents Scrooge at the beginning of the novella. Use at least one quotation and analyse the language techniques Dickens uses.",
+      writingPrompt: "Analyse Lady Macbeth's reaction to the letter in Act 1, Scene 5. How does she view her husband's character, and what does this reveal about her own nature?",
       keyPoints: [
-        "Clear topic sentence about initial characterisation",
-        "Includes relevant quotation(s)",
-        "Analyses language techniques (not just identifies)",
-        "Explains effect on reader",
-        "Links back to transformation/question"
+        "Analyses the 'milk of human kindness' metaphor",
+        "Discusses her immediate resolve to commit regicide",
+        "Contrasts her decisiveness with Macbeth's hesitation",
+        "Avoids PEE structure in favour of fluid analysis"
       ],
       exampleQuotes: [
-        "Hard and sharp as flint",
-        "solitary as an oyster",
-        "The cold within him froze his old features"
+        "too full o' th' milk of human kindness",
+        "art not without ambition, but without the illness should attend it"
       ],
       points: 15
     },
-    
-    // ==========================================
-    // BODY PARAGRAPH 2
-    // ==========================================
     {
       id: 3,
-      title: "Ghost of Christmas Past",
+      title: "Rejection of Femininity (Act 1, Scene 5)",
       type: "body",
       learningMaterial: `
-## The Ghost of Christmas Past - Beginning of Change
+## The 'Unsex Me Here' Soliloquy
+Lady Macbeth believes her femininity is an obstacle to committing murder. She calls upon dark spirits to remove it.
 
-The Ghost of Christmas Past shows Scrooge memories from his youth and early adulthood. This is the first stage of his transformation.
+### Deep Dive: "Unsex Me Here"
+- **Imperatives:** She commands the spirits (*"Come"*, *"unsex"*, *"take"*, *"fill"*). This shows immense power and hubris (pride).
+- **Body Imagery:** She wants her blood made *"thick"* to stop remorse; she wants her *"milk"* exchanged for *"gall"* (poison/bile).
+- **Context (AO3):** By inviting spirits to possess her, she is figuratively becoming a witch. This aligns her with the antagonists of the play and creates a sense of horror.
 
-### Key Moments
-- Scrooge sees himself as a **lonely schoolboy** - abandoned at Christmas
-- He remembers his **sister Fan** with genuine emotion
-- He witnesses his **younger self with Belle** and their broken engagement
-- Belle tells young Scrooge: **"Another idol has displaced me... a golden one"**
-
-### Key Quotations
-- **"A solitary child, neglected by his friends"** - Explains origins of his isolation
-- **"His face had not the harsh and rigid lines of later years"** - Shows he wasn't always cold
-- **"Spirit! Remove me from this place"** - Scrooge is emotionally affected
-
-### What to Analyse
-- How does revisiting the past begin Scrooge's emotional awakening?
-- What do we learn about WHY Scrooge became the way he is?
-- How does Dickens show Scrooge's emotional reaction?
+### Critical Style Tip
+Don't just say "she wants to be a man." Argue that she views **remorse** and **conscience** as feminine weaknesses that must be surgically removed.
       `,
-      writingPrompt: "Write a paragraph analysing how the Ghost of Christmas Past begins Scrooge's transformation. Focus on how revisiting his memories affects him emotionally and what we learn about the origins of his character.",
+      writingPrompt: "Explore how Shakespeare uses language in the 'unsex me here' soliloquy to show Lady Macbeth rejecting her gender and humanity to achieve her goals.",
       keyPoints: [
-        "Focuses on the role of memory/the past",
-        "Includes relevant quotation(s)",
-        "Shows understanding of cause and effect",
-        "Analyses Scrooge's emotional response",
-        "Connects to overall transformation arc"
+        "Analyses the imperative verbs used to command spirits",
+        "Explores the imagery of body/blood/milk vs. gall",
+        "Links her actions to Jacobean fears of witchcraft and the supernatural",
+        "Evaluates why she feels she must lose her femininity to gain power"
       ],
       exampleQuotes: [
-        "A solitary child, neglected by his friends",
-        "Spirit! Remove me from this place",
-        "Another idol has displaced me"
+        "Come, you spirits / That tend on mortal thoughts, unsex me here",
+        "take my milk for gall",
+        "make thick my blood"
       ],
       points: 15
     },
-    
-    // ==========================================
-    // BODY PARAGRAPH 3
-    // ==========================================
     {
       id: 4,
-      title: "Ghost of Christmas Present",
+      title: "Appearance vs. Reality (Act 1, Scenes 5 & 6)",
       type: "body",
       learningMaterial: `
-## The Ghost of Christmas Present - Seeing Others
+## The Serpent and the Flower
+Lady Macbeth is the master of deception. She instructs Macbeth on how to hide their intent.
 
-This spirit shows Scrooge how others live and celebrate Christmas in the present day, including the Cratchit family.
+### Visual Imagery
+- **The Flower:** Innocent, beautiful, passive, natural.
+- **The Serpent:** Biblical allusion (Adam and Eve), deadly, hidden, treacherous.
 
-### Key Moments
-- The **Cratchit family dinner** - joy despite poverty
-- **Tiny Tim** - "God bless us, every one!"
-- The spirit reveals **Ignorance and Want** - children representing society's problems
-- Scrooge asks **"Are there no prisons? Are there no workhouses?"** thrown back at him
+### Controlling the Narrative
+When Duncan arrives, Lady Macbeth plays the perfect hostess. This **juxtaposition** between her murderous interior thoughts and her polite exterior behavior highlights her dangerous capacity for deceit.
 
-### Key Quotations
-- **"Spirit, tell me if Tiny Tim will live"** - Shows growing empathy
-- **"They are Man's... This boy is Ignorance. This girl is Want"** - Social message
-- Bob Cratchit toasts Scrooge as **"the Founder of the Feast"** despite everything
-
-### What to Analyse
-- How does seeing the Cratchits change Scrooge?
-- What is the significance of Tiny Tim to Scrooge's transformation?
-- How does Dickens use this spirit to deliver social commentary?
+### Focus Question
+How does she coach Macbeth? She treats him almost like a child who cannot hide his emotions, asserting dominance in the relationship.
       `,
-      writingPrompt: "Write a paragraph analysing how the Ghost of Christmas Present furthers Scrooge's transformation. Focus on his growing empathy, particularly in relation to the Cratchit family and Tiny Tim.",
+      writingPrompt: "Discuss Lady Macbeth's role in teaching Macbeth to deceive others. How does Shakespeare use the metaphor of the flower and the serpent?",
       keyPoints: [
-        "Discusses the present and its impact on Scrooge",
-        "Includes quotation with analysis",
-        "Shows understanding of empathy development",
-        "May reference social commentary",
-        "Connects to transformation journey"
+        "Analyses the 'innocent flower/serpent under it' metaphor",
+        "Discusses the biblical connotations of the serpent (temptation)",
+        "Examines her dominance over Macbeth in these scenes",
+        "Comments on the theme of appearance vs. reality"
       ],
       exampleQuotes: [
-        "Spirit, tell me if Tiny Tim will live",
-        "God bless us, every one!",
-        "This boy is Ignorance. This girl is Want"
+        "look like the innocent flower, / But be the serpent under't",
+        "leave all the rest to me"
       ],
       points: 15
     },
-    
-    // ==========================================
-    // BODY PARAGRAPH 4
-    // ==========================================
     {
       id: 5,
-      title: "Ghost of Christmas Yet to Come",
+      title: "Manipulation of Macbeth (Act 1, Scene 7)",
       type: "body",
       learningMaterial: `
-## The Ghost of Christmas Yet to Come - The Final Warning
+## Questioning His Masculinity
+When Macbeth tries to back out ("We will proceed no further"), Lady Macbeth uses emotional blackmail to force his hand.
 
-This silent, terrifying spirit shows Scrooge a possible future - his own death, unmourned and forgotten.
+### Methods of Manipulation
+1.  **Questioning his love:** *"From this time / Such I account thy love."*
+2.  **Questioning his manhood:** *"When you durst do it, then you were a man."*
+3.  **Violent Imagery:** The image of dashing a baby's brains out.
 
-### Key Moments
-- People **laugh and celebrate** an unnamed man's death
-- His possessions are **stolen and sold** by thieves
-- His **grave** - neglected and alone
-- Tiny Tim has **died** in this future
-- Scrooge pleads: **"I will honour Christmas in my heart"**
-
-### Key Quotations
-- **"The phantom slowly, gravely, silently approached"** - Creates fear
-- **"Before I draw nearer to that stone... answer me one question. Are these the shadows of the things that Will be, or are they shadows of things that May be, only?"** - Hope for change
-- **"I will not shut out the lessons that they teach!"** - Commitment to transformation
-
-### What to Analyse
-- How does fear function as a catalyst for change?
-- Why is this spirit the most effective?
-- How does Dickens create tension and horror?
+### Analysis of the "Baby" Image
+This is the most shocking moment in Act 1. She takes the ultimate symbol of maternal care (a breastfeeding infant) and destroys it violently. This proves her earlier wish to have her milk turned to gall has worked—she has severed her maternal bond to prove her loyalty to her oath.
       `,
-      writingPrompt: "Write a paragraph analysing how the Ghost of Christmas Yet to Come completes Scrooge's transformation. Consider how Dickens uses fear and the possibility of change to drive Scrooge's moral awakening.",
+      writingPrompt: "Analyse how Lady Macbeth manipulates Macbeth into killing Duncan in Act 1, Scene 7. Focus specifically on her attacks on his masculinity and the violent imagery she uses.",
       keyPoints: [
-        "Discusses the future/consequences",
-        "Analyses how fear motivates change",
-        "Includes relevant quotation with analysis",
-        "Shows understanding of the transformation's climax",
-        "May discuss Dickens' technique (silence, imagery)"
+        "Identifies the specific rhetorical questions she uses to shame him",
+        "Analyses the 'dashed the brains out' imagery and its effect on the audience",
+        "Discusses her definition of masculinity (violence/action) vs. Macbeth's",
+        "Explains how this scene seals Duncan's fate"
       ],
       exampleQuotes: [
-        "Are these the shadows of things that Will be, or... May be?",
-        "I will honour Christmas in my heart",
-        "I will not shut out the lessons that they teach"
+        "When you durst do it, then you were a man",
+        "plucked my nipple from his boneless gums",
+        "dashed the brains out"
       ],
       points: 15
     },
-    
-    // ==========================================
-    // BODY PARAGRAPH 5
-    // ==========================================
     {
       id: 6,
-      title: "The Transformed Scrooge",
+      title: "The Murder and Aftermath (Act 2, Scene 2)",
       type: "body",
       learningMaterial: `
-## Scrooge's Redemption - Stave Five
+## Pragmatism vs. Panic
+The murder has happened. Macbeth is distraught, but Lady Macbeth remains practical—or at least appears to.
 
-The final stave shows us the transformed Scrooge on Christmas morning and beyond.
+### A Crack in the Armor?
+- *"Had he not resembled / My father as he slept, I had done't."*
+- This is a crucial detail. It suggests she is not actually a witch or a monster; she still has human limits.
 
-### Key Moments
-- Scrooge wakes **joyful and laughing** - complete contrast to Stave One
-- He **sends a turkey** to the Cratchits anonymously
-- He **gives money to charity** collectors
-- He **joins Fred's Christmas dinner**
-- He **raises Bob's salary** and helps Tiny Tim
-
-### Key Quotations
-- **"I am as light as a feather, I am as happy as an angel, I am as merry as a schoolboy"** - Listing shows overwhelming joy
-- **"He became as good a friend, as good a master, and as good a man, as the good old city knew"** - Transformed reputation
-- **"Scrooge was better than his word"** - Actions prove change is genuine
-
-### What to Analyse
-- How does Dickens show the completeness of transformation?
-- How do language and structure in Stave Five contrast with Stave One?
-- Why does Dickens emphasise that the change is lasting?
+### Irony
+- She tells Macbeth: *"A little water clears us of this deed."*
+- This line is deeply ironic considering her sleepwalking in Act 5 (*"Out, damned spot"*). In Act 2, she views the murder as a physical mess to be cleaned, failing to understand the psychological stain of guilt.
+- She takes charge, returning the daggers when Macbeth cannot. She is the **practical force** ensuring their safety.
       `,
-      writingPrompt: "Write a paragraph analysing how Dickens presents the transformed Scrooge in Stave Five. Consider how language, imagery, and Scrooge's actions demonstrate the completeness of his redemption.",
+      writingPrompt: "Contrast Lady Macbeth's reaction to the murder with Macbeth's reaction in Act 2, Scene 2. Does she show any signs of weakness, and how does she attempt to control the situation?",
       keyPoints: [
-        "Contrasts with opening characterisation",
-        "Includes quotation showing transformation",
-        "Analyses language techniques (listing, contrast)",
-        "Discusses lasting nature of change",
-        "May reference Dickens' message/purpose"
+        "Contrasts Macbeth's hysteria with Lady Macbeth's pragmatism",
+        "Analyses the significance of the 'father' reference (humanity)",
+        "Explores the irony of 'A little water clears us of this deed'",
+        "Discusses her role in taking charge of the crime scene (the daggers)"
       ],
       exampleQuotes: [
-        "I am as light as a feather, I am as happy as an angel",
-        "as good a friend, as good a master, and as good a man",
-        "Scrooge was better than his word"
+        "Had he not resembled / My father as he slept, I had done't",
+        "A little water clears us of this deed",
+        "My hands are of your colour; but I shame / To wear a heart so white"
       ],
       points: 15
     },
-    
-    // ==========================================
-    // CONCLUSION
-    // ==========================================
     {
       id: 7,
       title: "Conclusion",
       type: "conclusion",
       learningMaterial: `
-## Writing Your Conclusion
+## Synthesising Your Argument
+Bring your points together to answer the question: How does Shakespeare present her?
 
-Your conclusion should:
-- **Summarise your argument** - bring together your main points
-- **Answer the question directly** - how DOES Dickens present the transformation?
-- **Offer a final insight** - why does this matter? What is Dickens' message?
-- **End memorably** - a strong final sentence
+### Summary of Trajectory
+- In Acts 1 & 2, she is the **driving force**. Without her, Macbeth likely would not have acted.
+- She subverts gender norms, acting with 'masculine' aggression while Macbeth is 'feminine' in his fear.
+- However, the cracks (the father reference) hint that her suppression of nature cannot last.
 
-### Things to Mention
-- The **journey structure** - Past, Present, Future as a moral journey
-- **Dickens' techniques** - contrast, imagery, characterisation
-- **Dickens' purpose** - social commentary, moral message, hope for change
-- **Relevance** - why this message still resonates today
-
-### What NOT to Do
-- Don't introduce new evidence or quotations
-- Don't just repeat your introduction
-- Don't end with "In conclusion..." (find a more sophisticated way)
+### Final "Big Picture" Thought (AO3)
+Shakespeare presents a warning: Lady Macbeth disrupts the Great Chain of Being and the natural order of gender. While she seems powerful now, the audience knows this unnatural power comes at a terrible spiritual cost.
       `,
-      writingPrompt: "Write your conclusion. Summarise how Dickens presents Scrooge's transformation, highlight the key techniques he uses, and explain the significance of this transformation for Dickens' message.",
+      writingPrompt: "Write a conclusion that summarises Lady Macbeth's impact in Acts 1 and 2. Evaluate whether she is the true villain of the play's opening half and reflect on the consequences of her subversion of nature.",
       keyPoints: [
-        "Summarises main argument coherently",
-        "Directly addresses the question",
-        "References key techniques/methods",
-        "Shows understanding of Dickens' purpose",
-        "Ends with strong final statement"
+        "Summarises her progression from ambition to the practical handling of the murder",
+        "Offers a final judgment on her character (e.g., powerful but doomed)",
+        "Links back to the disruption of natural order and gender",
+        "Does not introduce new quotes or evidence"
       ],
+      exampleQuotes: [],
       points: 15
     }
   ],
-  
-  // ============================================
-  // GRADING CRITERIA
-  // ============================================
-  // These are used by the AI when providing feedback
-  // Adjust the weightings to match your assessment criteria
+
   gradingCriteria: {
     content: {
-      weight: 30,
-      description: "Understanding of text, relevant evidence, addressing the question"
+      weight: 40,
+      description: "AO1: Your response to the text. Are you maintaining a critical style? Are you answering the specific question? Are you using well-chosen references?"
     },
     analysis: {
-      weight: 30,
-      description: "Analysis of language, structure, and techniques; explanation of effects"
+      weight: 35,
+      description: "AO2: Analysis of language, form, and structure. Are you zooming in on keywords? Are you exploring connotations and imagery (e.g., 'milk', 'blood', 'serpent')?"
     },
     structure: {
-      weight: 20,
-      description: "Clear paragraph structure, logical flow, cohesive argument"
+      weight: 10,
+      description: "Organization of ideas. Does the essay flow logically from one paragraph to the next?"
     },
     expression: {
-      weight: 20,
-      description: "Academic vocabulary, spelling, punctuation, grammar"
+      weight: 15,
+      description: "AO3 (Context) Integration & Clarity. Are you weaving context (Jacobean gender roles) into your argument rather than bolting it on? Is your writing clear and accurate?"
     }
   }
 };
