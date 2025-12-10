@@ -3660,6 +3660,14 @@
                 className="paragraph-editor"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  alert('Pasting is not allowed. Please type your response.');
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  alert('Drag and drop is not allowed. Please type your response.');
+                }}
                 placeholder="Start writing your paragraph here..."
                 disabled={isSubmitting}
               />
@@ -3819,34 +3827,69 @@
     
     function TeacherDashboard({ onLogout }) {
       const [submissions, setSubmissions] = useState([]);
+      const [inProgress, setInProgress] = useState([]);
       const [loading, setLoading] = useState(true);
       const [selectedSubmission, setSelectedSubmission] = useState(null);
+      const [error, setError] = useState(null);
       
-      const fetchSubmissions = useCallback(async () => {
+      const fetchData = useCallback(async () => {
         try {
-          const response = await fetch('/.netlify/functions/get-submissions');
-          const data = await response.json();
-          if (data.submissions) {
-            const essaySubmissions = data.submissions.filter(s => s.type === 'essay');
-            setSubmissions(essaySubmissions);
+          setError(null);
+          const authParam = encodeURIComponent(CONFIG.teacherPassword || 'teacher123');
+          
+          // Fetch both submissions and in-progress students
+          const [submissionsRes, progressRes] = await Promise.all([
+            fetch(`/.netlify/functions/get-submissions?auth=${authParam}`),
+            fetch(`/.netlify/functions/save-progress?auth=${authParam}`)
+          ]);
+          
+          const submissionsData = await submissionsRes.json();
+          const progressData = await progressRes.json();
+          
+          if (!submissionsRes.ok) {
+            throw new Error(submissionsData.error || 'Failed to fetch submissions');
+          }
+          
+          if (submissionsData.submissions) {
+            setSubmissions(submissionsData.submissions);
+          }
+          
+          if (progressData.inProgress) {
+            setInProgress(progressData.inProgress);
           }
         } catch (error) {
-          console.error('Failed to fetch submissions:', error);
+          console.error('Failed to fetch data:', error);
+          setError(error.message);
         } finally {
           setLoading(false);
         }
       }, []);
       
       useEffect(() => {
-        fetchSubmissions();
-        const interval = setInterval(fetchSubmissions, CONFIG.DASHBOARD_REFRESH_INTERVAL);
+        fetchData();
+        const interval = setInterval(fetchData, CONFIG.DASHBOARD_REFRESH_INTERVAL);
         return () => clearInterval(interval);
-      }, [fetchSubmissions]);
+      }, [fetchData]);
       
       if (loading) {
         return (
           <div className="app-container dashboard-container">
             <LoadingSpinner text="Loading submissions..." />
+          </div>
+        );
+      }
+      
+      if (error) {
+        return (
+          <div className="app-container dashboard-container">
+            <div className="card">
+              <h3 style={{ color: 'var(--color-error)', marginBottom: 'var(--space-md)' }}>Error Loading Dashboard</h3>
+              <p style={{ marginBottom: 'var(--space-lg)' }}>{error}</p>
+              <div style={{ display: 'flex', gap: 'var(--space-md)' }}>
+                <button className="btn btn-primary" onClick={fetchData}>Try Again</button>
+                <button className="btn btn-secondary" onClick={onLogout}>Back to Home</button>
+              </div>
+            </div>
           </div>
         );
       }
@@ -3860,12 +3903,72 @@
                 <p className="subtitle">{CONFIG.title}</p>
               </div>
               <div style={{ display: 'flex', gap: 'var(--space-md)' }}>
-                <button className="btn btn-secondary" onClick={fetchSubmissions}>🔄 Refresh</button>
+                <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
                 <button className="btn btn-secondary" onClick={onLogout}>Logout</button>
               </div>
             </div>
           </div>
           
+          {/* In-Progress Students */}
+          <div className="card" style={{ marginBottom: 'var(--space-xl)' }}>
+            <h3 style={{ marginBottom: 'var(--space-lg)' }}>✏️ In Progress ({inProgress.length})</h3>
+            
+            {inProgress.length === 0 ? (
+              <p style={{ color: 'var(--color-text-muted)', textAlign: 'center', padding: 'var(--space-lg)' }}>
+                No students currently working on essays.
+              </p>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--color-border)' }}>
+                      <th style={{ padding: 'var(--space-md)', textAlign: 'left' }}>Student</th>
+                      <th style={{ padding: 'var(--space-md)', textAlign: 'left' }}>Current Section</th>
+                      <th style={{ padding: 'var(--space-md)', textAlign: 'center' }}>Progress</th>
+                      <th style={{ padding: 'var(--space-md)', textAlign: 'left' }}>Last Active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {inProgress.map((student, index) => (
+                      <tr key={index} style={{ borderBottom: '1px solid var(--color-border-light)' }}>
+                        <td style={{ padding: 'var(--space-md)' }}>{student.studentName}</td>
+                        <td style={{ padding: 'var(--space-md)', color: 'var(--color-text-muted)' }}>
+                          {student.currentParagraph || `Paragraph ${student.currentParagraphIndex || 1}`}
+                        </td>
+                        <td style={{ padding: 'var(--space-md)', textAlign: 'center' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-sm)' }}>
+                            <div style={{ 
+                              width: '100px', 
+                              height: '8px', 
+                              background: 'var(--color-border)', 
+                              borderRadius: '4px',
+                              overflow: 'hidden'
+                            }}>
+                              <div style={{ 
+                                width: `${student.percentComplete || 0}%`, 
+                                height: '100%', 
+                                background: 'var(--color-primary)',
+                                borderRadius: '4px',
+                                transition: 'width 0.3s ease'
+                              }} />
+                            </div>
+                            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+                              {student.completedParagraphs || 0}/{student.totalParagraphs || PARAGRAPHS.length}
+                            </span>
+                          </div>
+                        </td>
+                        <td style={{ padding: 'var(--space-md)', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
+                          {student.lastUpdate ? formatDateTime(student.lastUpdate) : '-'}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+          
+          {/* Completed Submissions */}
           <div className="card">
             <h3 style={{ marginBottom: 'var(--space-lg)' }}>📝 Completed Essays ({submissions.length})</h3>
             
@@ -3959,11 +4062,39 @@
         }
       }, []);
       
-      // Auto-save
+      // Auto-save to localStorage and server
       useEffect(() => {
         if (studentName && screen === 'writing') {
+          // Save to localStorage
           const saveData = { studentName, paragraphStates, currentParagraphIndex, savedAt: new Date().toISOString() };
           localStorage.setItem(CONFIG.LOCAL_STORAGE_KEY, JSON.stringify(saveData));
+          
+          // Save to server for teacher dashboard
+          const completedCount = Object.values(paragraphStates).filter(s => s.completed).length;
+          const percentComplete = Math.round((completedCount / PARAGRAPHS.length) * 100);
+          const currentParagraph = PARAGRAPHS[currentParagraphIndex];
+          
+          const progressData = {
+            studentName,
+            type: 'essay',
+            essayTitle: CONFIG.essayTitle,
+            currentParagraph: currentParagraph?.title || 'Starting',
+            currentParagraphIndex: currentParagraphIndex + 1,
+            totalParagraphs: PARAGRAPHS.length,
+            completedParagraphs: completedCount,
+            percentComplete,
+            paragraphScores: Object.entries(paragraphStates)
+              .filter(([_, s]) => s.completed)
+              .map(([id, s]) => ({ id, score: s.score })),
+            lastUpdate: new Date().toISOString()
+          };
+          
+          // Debounced save to server (don't block UI)
+          fetch('/.netlify/functions/save-progress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(progressData)
+          }).catch(err => console.log('Progress save note:', err.message));
         }
       }, [studentName, paragraphStates, currentParagraphIndex, screen]);
       
