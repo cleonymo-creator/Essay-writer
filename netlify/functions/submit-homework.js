@@ -51,14 +51,18 @@ exports.handler = async (event, context) => {
       };
     }
 
-    if (!submission.answers || Object.keys(submission.answers).length === 0) {
+    // Check for either homework answers OR essay content
+    const isEssay = submission.type === 'essay';
+    const isHomework = submission.answers && Object.keys(submission.answers).length > 0;
+    
+    if (!isEssay && !isHomework) {
       return {
         statusCode: 400,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify({ error: 'Answers are required' })
+        body: JSON.stringify({ error: 'Submission content is required (answers or essay)' })
       };
     }
 
